@@ -122,8 +122,11 @@ class JottingDownWindow(QWidget):
 
     def save_tabs(self):
         config = {
-            "files": [self.notes_folder + "/" + self.tab_widget.tabText(i) for i in range(self.tab_widget.count())],
-            "last_active": self.tab_widget.currentIndex()
+            "files": [
+                f"{self.notes_folder}/{self.tab_widget.tabText(i)}"
+                for i in range(self.tab_widget.count())
+            ],
+            "last_active": self.tab_widget.currentIndex(),
         }
         with open(self.config_file, "w") as file:
             json.dump(config, file)
@@ -171,8 +174,7 @@ if __name__ == "__main__":
         if window.isHidden():
             window.show()
             window.activateWindow()  # Add this line to activate the window
-            current_widget = window.tab_widget.currentWidget()
-            if current_widget:
+            if current_widget := window.tab_widget.currentWidget():
                 current_widget.setFocus()  # Set focus on the text box
         else:
             window.hide()
